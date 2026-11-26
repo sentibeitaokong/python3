@@ -108,40 +108,6 @@ b = [1, 2, 3, 4]  # 变量 b 赋值了一个新的列表, [1, 2, 3, 4]
 print(b is a)     # => False, a 和 b 引用的不是同一个对象
 print(b == a)     # => True, a 和 b 的对象的值相同
 
-
-# 创建字符串可以使用单引号（'）或者双引号（"）
-print("这是个字符串")
-print('这也是个字符串')
-
-# 字符串可以使用加号连接成新的字符串
-print("Hello " + "world!")  # => "Hello world!"
-# 非变量形式的字符串甚至可以在没有加号的情况下连接
-print("Hello " "world!")  # => "Hello world!"
-
-# 字符串可以被当作字符列表
-print("Hello world!"[0])  # => 'H'
-
-# 你可以获得字符串的长度
-print(len("This is a string"))  # => 16
-
-# 你可以使用 f-strings 格式化字符串（python3.6+）
-name = "Reiko"
-print(f"She said her name is {name}.")  # => "She said her name is Reiko"
-# 你可以在大括号内几乎加入任何 python 表达式，表达式的结果会以字符串的形式返回
-print(f"{name} is {len(name)} characters long.")  # => "Reiko is 5 characters long."
-
-# 用 .format 来格式化字符串
-print("{} can be {}".format("strings", "interpolated"))
-# 可以重复参数以节省时间
-print("{0} be nimble, {0} be quick, {0} jump over the {1}".format("Jack", "candle stick"))
-# => "Jack be nimble, Jack be quick, Jack jump over the candle stick"
-# 如果不想数参数，可以用关键字
-print("{name} wants to eat {food}".format(name="Bob", food="lasagna"))
-# => "Bob wants to eat lasagna"
-
-# 如果你的 Python3 程序也要在 Python2.5 以下环境运行，也可以用老式的格式化语法
-print("%s can be %s the %s way" % ("strings", "interpolated", "old"))
-
 # None 是一个对象
 print(None)  # => None
 

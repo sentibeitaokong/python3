@@ -5,16 +5,16 @@
 # 说明：所有表达式的返回值都用 print() 展示。
 # ====================================================
 def fibonacci(n):
+    result=[]
     a,b=0,1
     if n==0:
         return 0
     while n>0:
+        result.append(a)
         a,b=b,a+b
         n=n-1
-    print(a)
+    print(result)
 fibonacci(3)
-
-
 
 # 用 def 定义新函数
 def add(x, y):
@@ -24,9 +24,31 @@ def add(x, y):
 # 调用函数
 print(add(5, 6))  # => 打印 "x is 5 and y is 6" 并且返回 11
 
-# 也可以用关键字参数来调用函数
+# 也可以用关键字参数来调用函数 默认值参数
 print(add(y=6, x=5))  # 关键字参数可以用任何顺序
 
+# 重要警告： 默认值只计算一次。默认值为列表、字典或类实例等可变对象时，会产生与该规则不同的结果。例如，下面的函数会累积后续调用时传递的参数：
+def f(a, L=[]):
+    L.append(a)
+    return L
+
+print(f(1))
+print(f(2))
+print(f(3))
+'''
+[1]
+[1, 2]
+[1, 2, 3]
+'''
+# 不想在后续调用之间共享默认值时，应以如下方式编写函数：
+def f(a, L=None):
+    if L is None:
+        L = []
+    L.append(a)
+    return L
+print(f(1))
+print(f(2))
+print(f(3))
 
 # 我们可以定义一个可变参数函数
 def varargs(*args):
@@ -120,36 +142,3 @@ print([x for x in [3, 4, 5, 6, 7] if x > 5])  # => [6, 7]
 print({x for x in 'abcddeef' if x not in 'abc'})  # => {'d', 'e', 'f'}
 print({x: x**2 for x in range(5)})  # => {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}
 
-# match表达式
-def http_error(status):
-    match status:
-        case 400:
-            return "Bad request"
-        case 404:
-            return "Not found"
-        case 418:
-            return "I'm a teapot"
-        case _:
-            return "Something's wrong with the internet"
-print(http_error(400))
-
-# 枚举
-from enum import Enum
-class Color(Enum):
-    RED='red'
-    BLUE='blue'
-    GREEN='green'
-
-# color=Color(input("Enter your choice of 'red', 'blue' or 'green': "))
-# match color:
-#     case Color.RED:
-#         print('i see red')
-#     case Color.BLUE:
-#         print('i see blue')
-#     case Color.GREEN:
-#         print('i see green')
-#     case _:
-#         print('i see nothing')
-
-singleton = 'hello'
-print(len(singleton))

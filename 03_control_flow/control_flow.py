@@ -6,11 +6,6 @@
 #       不会在你项目里留下 myfile.txt 之类的文件。
 # ====================================================
 
-import json
-import os
-import shutil
-import tempfile
-
 # 先随便定义一个变量
 some_var = 5
 
@@ -67,6 +62,28 @@ for i in range(4, 8):
 for i in range(4, 8, 2):
     print(i)
 
+# 当对字典执行循环时，可以使用 items() 方法同时提取键及其对应的值。
+knights = {'gallahad': 'the pure', 'robin': 'the brave'}
+for k, v in knights.items():
+    print(k, v)
+
+"""
+gallahad the pure
+robin the brave
+"""
+
+# 同时循环两个或多个序列时，用 zip() 函数可以将其内的元素一一匹配：
+questions = ['name', 'quest', 'favorite color']
+answers = ['lancelot', 'the holy grail', 'blue']
+for q, a in zip(questions, answers):
+    print('What is your {0}?  It is {1}.'.format(q, a))
+
+"""
+What is your name?  It is lancelot.
+What is your quest?  It is the holy grail.
+What is your favorite color?  It is blue.
+"""
+
 """
 遍历列表，并且同时返回列表里的每一个元素的索引和数值。
 打印:
@@ -86,10 +103,90 @@ while 循环直到条件不满足
     2
     3
 """
+
+# 枚举
+from enum import Enum
+class Color(Enum):
+    RED='red'
+    BLUE='blue'
+    GREEN='green'
+
+# color=Color(input("Enter your choice of 'red', 'blue' or 'green': "))
+# match color:
+#     case Color.RED:
+#         print('i see red')
+#     case Color.BLUE:
+#         print('i see blue')
+#     case Color.GREEN:
+#         print('i see green')
+#     case _:
+#         print('i see nothing')
+
+singleton = 'hello'
+print(len(singleton))
+
 x = 0
 while x < 4:
     print(x)
     x += 1  # x = x + 1 的简写
+
+# break
+for n in range(2, 10):
+    for x in range(2, n):
+        if n % x == 0:
+            print(f"{n} equals {x} * {n//x}")
+            break
+
+'''
+4 equals 2 * 2
+6 equals 2 * 3
+8 equals 2 * 4
+9 equals 3 * 3
+'''
+
+# continue
+for num in range(2, 10):
+    if num % 2 == 0:
+        print(f"Found an even number {num}")
+        continue
+    print(f"Found an odd number {num}")
+
+'''
+Found an even number 2
+Found an odd number 3
+Found an even number 4
+Found an odd number 5
+Found an even number 6
+Found an odd number 7
+Found an even number 8
+Found an odd number 9
+'''
+
+# pass语句不执行任何动作。语法上需要一个语句，但程序毋需执行任何动作时，可以使用该语句
+# while True:
+#     pass  # 无限等待键盘中断 (Ctrl+C)
+#
+# # 创建一个最小的类：
+# class MyEmptyClass:
+#     pass
+#
+# # pass 还可用作函数或条件语句体的占位符，让你保持在更抽象的层次进行思考
+# def initlog(*args):
+#     pass   # 记得实现这个！
+
+# match 语句
+def http_error(status):
+    match status:
+        case 400:
+            return "Bad request"
+        case 404:
+            return "Not found"
+        case 418:
+            return "I'm a teapot"
+        case _:
+            return "Something's wrong with the internet"
+
+print(http_error(400))
 
 
 # 用 try/except 块处理异常状况
@@ -114,51 +211,6 @@ else:
     print("All good!")
 finally:
     print("We can clean up resources here")
-
-# 演示文件操作：使用临时目录
-workdir = tempfile.mkdtemp(prefix="python_basics_")
-print("本次演示使用的临时目录:", workdir)
-
-# 先准备一个 myfile.txt，供 with 语句读取
-myfile_txt = os.path.join(workdir, "myfile.txt")
-with open(myfile_txt, "w", encoding="utf-8") as f:
-    f.write("第一行\n第二行\n")
-
-# 你可以使用 with 语句来代替 try/finally 对操作进行结束的操作
-with open(myfile_txt, encoding="utf-8") as f:
-    for line in f:
-        print(line, end="")
-
-# 写入文件
-contents = {"aa": 12, "bb": 21}
-myfile1 = os.path.join(workdir, "myfile1.txt")
-with open(myfile1, "w+", encoding="utf-8") as file:
-    file.write(str(contents))        # 写入字符串到文件
-
-myfile2 = os.path.join(workdir, "myfile2.txt")
-with open(myfile2, "w+", encoding="utf-8") as file:
-    file.write(json.dumps(contents))  # 写入对象到文件
-
-# 从文件读取字符串
-with open(myfile1, "r+", encoding="utf-8") as file:
-    contents = file.read()
-print(contents)
-# print: {"aa": 12, "bb": 21}
-
-# 从文件读取 json 对象
-with open(myfile2, "r+", encoding="utf-8") as file:
-    contents = json.load(file)
-print(contents)
-# print: {"aa": 12, "bb": 21}
-
-# Windows 环境调用 open() 读取文件的默认编码为 ANSI，如果需要读取 utf-8 编码的文件，
-# 需要指定 encoding 参数:
-# open("myfile3.txt", "r+", encoding="utf-8")
-
-# 清理本次演示生成的临时文件
-shutil.rmtree(workdir)
-print("已清理临时目录")
-
 
 # Python 提供一个叫做可迭代 (iterable) 的基本抽象。一个可迭代对象是可以被当作序列
 # 的对象。比如说上面 range 返回的对象就是可迭代的。
@@ -202,3 +254,7 @@ for i in our_iterator:
 # 可以用 list 一次取出迭代器或者可迭代对象所有的元素
 print(list(filled_dict.keys()))  # => 返回 ["one", "two", "three"]
 print(list(our_iterator))        # => 返回 [] 因为迭代的位置被保存了
+
+
+
+
