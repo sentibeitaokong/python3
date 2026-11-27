@@ -42,14 +42,14 @@ print(f'Debugging {bugs=} {count=} {area=}') # Debugging bugs='roaches' count=13
 
 # 用 .format 来格式化字符串
 print("{} can be {}".format("strings", "interpolated"))
-# 可以重复参数以节省时间
+# 可以重复参数以节省时间，按位置访问参数:
 print("{0} be nimble, {0} be quick, {0} jump over the {1}".format("Jack", "candle stick"))
 # => "Jack be nimble, Jack be quick, Jack jump over the candle stick"
-# 如果不想数参数，可以用关键字
+# 按名称访问参数:
 print("{name} wants to eat {food}".format(name="Bob", food="lasagna"))
 # => "Bob wants to eat lasagna"
 
-# 如果不想分拆较长的格式字符串，最好按名称引用变量进行格式化，不要按位置。这项操作可以通过传递字典，并用方括号 '[]' 访问键来完成。
+# 如果不想分拆较长的格式字符串，最好按名称引用变量进行格式化，不要按位置, 访问参数的项。
 # {0[Jack]:d} => 取table第0个参数为Jack的值并且以十进制展示 => table['Jack']
 table = {'Sjoerd': 4127, 'Jack': 4098, 'Dcab': 8637678}
 print('Jack: {0[Jack]:d}; Sjoerd: {0[Sjoerd]:d}; '
@@ -58,6 +58,46 @@ print('Jack: {0[Jack]:d}; Sjoerd: {0[Sjoerd]:d}; '
 # 这也可以通过将 table 字典作为采用 ** 标记的关键字参数传入来实现。
 table = {'Sjoerd': 4127, 'Jack': 4098, 'Dcab': 8637678}
 print('Jack: {Jack:d}; Sjoerd: {Sjoerd:d}; Dcab: {Dcab:d}'.format(**table)) # Jack: 4098; Sjoerd: 4127; Dcab: 8637678
+
+#对齐文本以及指定宽度:
+print('{:<30}'.format('left aligned')) # 左对齐 'left aligned                  '
+print('{:>30}'.format('right aligned')) # 右对齐 '                 right aligned'
+print('{:^30}'.format('centered'))    # 居中 '           centered           '
+print('{:*^30}'.format('centered'))  # 居中填充* '***********centered***********'
+
+# 替代 %+f, %-f 和 % f 以及指定正负号:
+print('{:+f}; {:+f}'.format(3.14, -3.14))  # 总是显示 => '+3.140000; -3.140000'
+print('{: f}; {: f}'.format(3.14, -3.14))  # 对正数显示一个空格 => ' 3.140000; -3.140000'
+print('{:-f}; {:-f}'.format(3.14, -3.14))  # 只显示负号 -- 等同于 '{:f}; {:f}' => '3.140000; -3.140000'
+
+# 替代 %x 和 %o 以及转换基于不同进位制的值:
+# 格式也支持二进制数
+print("int: {0:d};  hex: {0:x};  oct: {0:o};  bin: {0:b}".format(42))  # => int: 42;  hex: 2a;  oct: 52;  bin: 101010
+# with 0x, 0o, or 0b as prefix:
+print("int: {0:d};  hex: {0:#x};  oct: {0:#o};  bin: {0:#b}".format(42))  # => int: 42;  hex: 0x2a;  oct: 0o52;  bin: 0b101010
+
+# 使用逗号或下划线作为数字组分隔符:
+# ',' 对于整数表示类型 'd' 和 'n' 以外的浮点数表示类型，每 3 个数位插入一个逗号。对于其他表示类型，此选项不受支持。
+# '_' 对于整数表示类型 'd' 和 'n' 以外的浮点数表示类型，每 3 个数位插入一个下划线。
+# 对于整数表示类型 'b', 'o', 'x' 和 'X'，则每 4 个数位插入一个下划线。对于其他表示类型，此选项不受支持
+print('{:,}'.format(1234567890))  # => 1,234,567,890
+print('{:_}'.format(1234567890))  # => 1_234_567_890
+print('{:_b}'.format(1234567890))  # => 100_1001_1001_0110_0000_0010_1101_0010
+print('{:_x}'.format(1234567890))  # => 4996_02d2
+print('{:_}'.format(123456789.123456789))  # => 123_456_789.12345679
+# print('{:.,}'.format(123456789.123456789))  # 报错: ValueError: Format specifier missing precision
+# print('{:,._}'.format(123456789.123456789))  # 报错: ValueError: Format specifier missing precision
+# Split the line into chunks, which are concatenated automatically by Python
+
+# 表示为百分数:
+points = 19
+total = 22
+print('Correct answers: {:.2%}'.format(points/total))  # => Correct answers: 86.36%
+
+# 使用特定类型的专属格式化:
+import datetime as dt
+d = dt.datetime(2010, 7, 4, 12, 15, 58)
+print('{:%Y-%m-%d %H:%M:%S}'.format(d))  # => 2010-07-04 12:15:58
 
 
 # 几行代码将产生一组整齐的数据列，包含给定的整数及其平方与立方: Nd => N为宽度，d为十进制数字
